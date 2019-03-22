@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			.disply{
+				width:400px;
+				height:200px;
+				background-color: #ccc;
+			}
+			.disply .line{
+				padding:10px;
+				box-sizing: border-box;
+				height:100px;
+				line-height:140px;
+				text-align: right;
+				font-size: 30px;
+			}
+			.disply .line#first-line{
+				letter-spacing: 12px;
+			}
+			.disply .line#second-line{
+				font-size: 50px;
+				line-height: 130px;
+			}
+			.table{
+				width:400px;
+				height:500px;
+				text-align: center;
+				font-size:30px;
+				border:solid rgb(215,215,215) 1px;
+			}
+			.table td{
+				width: 100px;
+			}
+			.table .num{
+				background-color: rgb(224,224,224);
+			}
+			.table .step{
+				background-color: rgb(245,146,51);
+				color:white;
+			}
+			.table .other{
+				background-color: rgb(214,214,214)
+			}
+			.table .other:active,.table .num:active{
+				background-color: rgb(200,200,200);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="main">
+			<div class="disply">
+				<div class="line" id="first-line">
+					
+				</div>
+				<div class="line" id="second-line">
+					0
+				</div>
+			</div>
+			<div class="btn-wrap">
+				<table border="" class="table">
+					<tr><td class="other btn" id="AC">AC</td><td class="other btn" id="reverse">+/-</td><td class="other btn" id="percent">%</td><td class="step btn" data-value="/">/</td></tr>
+					<tr><td class="num btn" data-value="7">7</td><td class="num btn" data-value="8">8</td><td class="num btn" data-value="9">9</td><td class="step btn" data-value="*">*</td></tr>
+					<tr><td class="num btn" data-value="4">4</td><td class="num btn" data-value="5">5</td><td class="num btn" data-value="6">6</td><td class="step btn" data-value="-">-</td></tr>
+					<tr><td class="num btn" data-value="1">1</td><td class="num btn" data-value="2">2</td><td class="num btn" data-value="3">3</td><td class="step btn" data-value="+">+</td></tr>
+					<tr><td colspan="2" class="num btn" data-value="0">0</td><td class="num btn" data-value=".">.</td><td class="step btn" data-value="=">=</td></tr>
+				</table>
+				<script type="text/javascript">
+					var btn = document.getElementsByClassName('btn');
+					
+					var firstLine = document.getElementById('first-line');
+					var secondLine = document.getElementById('second-line');
+					
+					var percent = document.getElementById('percent');
+					
+					var persimmon = "";
+					var result = "";
+					var backup = "";
+					
+					var handleClick = function(value){
+						if(value == null){
+							return;
+						}else{
+							if(value == "="){
+								//得出结果
+								result = eval(persimmon);
+								secondLine.innerHTML = result;
+								backup = persimmon;
+								persimmon = "";
+								return;
+							}else{
+								persimmon += value;
+							}
+						}
+						firstLine.innerHTML = persimmon;
+					}
+					
+					for(var i=0;i<btn.length;i++){
+						btn[i].addEventListener('click',function(){
+							var dataValue = this.getAttribute('data-value');
+							handleClick(dataValue);
+						})
+					}
+					document.getElementById('AC').addEventListener('click',function(){
+						persimmon = "";
+						result="";
+						firstLine.innerHTML = "";
+						secondLine.innerHTML = 0;
+					})
+					document.getElementById('percent').addEventListener('click',function(){
+						result = parseFloat(persimmon)/100;
+						secondLine.innerHTML = result;
+					})
+					document.getElementById('reverse').addEventListener('click',function(){
+						var v = parseFloat(backup);
+						if(v>0){
+							v="-"+v;
+						}else{
+							v = Math.abs(v);
+						}
+						backup = v;
+						secondLine.innerHTML = v;
+					})
+				</script>
+			</div>
+		</div>
+	</body>
+</html>
